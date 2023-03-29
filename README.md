@@ -1,0 +1,2 @@
+# nixos
+Testing out Nixos
