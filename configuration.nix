@@ -12,25 +12,25 @@
 
   
 
-
-
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub = {
-  	enable = true;
-	version = 2;
-	configurationLimit = 5;
+  # Default UEFI setup
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  
+  # Dual Booting using grub
+  boot.loader = {
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot/efi"; # /boot will probably work too
+    };
+    grub = {                          # Using grub means first 2 lines can be removed
+      enable = true;
+      #device = ["nodev"];            # Generate boot menu but not actually installed
+      devices = ["nodev"];            # Install grub
+      efiSupport = true;
+      configurationLimit = 5;
+      useOSProber = true;             # Or use extraEntries like seen with Legacy
+    };                                # OSProber will probably not find windows partition on first install
   };
-
-
-  # boot.loader.grub.efiSupport = true;
-  # boot.loader.grub.efiInstallAsRemovable = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "/dev/vda"; # or "nodev" for efi only
-
-
-
-
 
 
   # networking.hostName = "nixos"; # Define your hostname.
@@ -67,20 +67,19 @@
 
 
 # Enable the X11 windowing system.
-
-  # Enable the Plasma 5 Desktop Environment.
-  services = {
+     services = {
     xserver = {
       enable = true;
       displayManager = {
         lightdm.enable = true;
-        defaultSession = "none+bspwm";
+        defaultSession = “none+bspwm”;
       };
       desktopManager.xfce.enable = true;
       windowManager.bspwm.enable = true;
       layout = "us";
-          };
+    };
   };
+
 
 
 
@@ -92,15 +91,32 @@
   ################################################
   # Enable sound.
   ################################################
- sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;  
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    mediaKeys.enable = true;
+   sound = {
+      enable = true;
+      mediaKeys.enable = true;
+    };
+    services = {
+      pipewire = {
+        enable = true;
+        alsa = {
+          enable = true;
+          support32Bit = true;
+        };
+        pulse.enable = true;
+      };
+    };
+    hardware = {
+      bluetooth = {
+        enable = true;
+        hsphfpd.enable = true;         # HSP & HFP daemon
+        settings = {
+          General = {
+            Enable = "Source,Sink,Media,Socket";
+          };
+        };
+      };
+    };
+
 
 
 
@@ -110,8 +126,9 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.deuce = {
   	isNormalUser = true;
-	  extraGroups = [ "wheel" "video" " audio" " networkmanager" "libvirt" ]; # Enable ‘sudo’ for the user.  
+	  extraGroups = [ "wheel" "video" " audio" " networkmanager" "libvirt" "lp" "scanner"]; # Enable ‘sudo’ for the user.  
 	  initialPassword = "password";
+    shell = pkgs.zsh;
   };
 
 
@@ -121,7 +138,7 @@
     cinnamon.nemo
     corectrl
     dunst
-    firefox
+    firefox-devedition-bin
     neovim
     nitrogen
     sxhkd
