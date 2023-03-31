@@ -129,6 +129,10 @@
 	  extraGroups = [ "wheel" "video" " audio" " networkmanager" "libvirt" "lp" "scanner"]; # Enable ‘sudo’ for the user.  
 	  initialPassword = "password";
     shell = pkgs.zsh;
+    ackages = with pkgs; [
+    #  firefox
+    #  thunderbird
+    ];
   };
 
 
