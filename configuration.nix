@@ -4,17 +4,25 @@
 
 { config, pkgs, ... }:
 
+
+let
+   user="deuce";
+in
+   
+
+
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+#      <home-manager/nixos>
     ];
 
   
 
   # Default UEFI setup
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+#  boot.loader.systemd-boot.enable = true;
+#  boot.loader.efi.canTouchEfiVariables = true;
   
   # Dual Booting using grub
   boot.loader = {
@@ -41,7 +49,7 @@
 
  
   #Set your time zone.
-  time.timeZone = "America/New_York";
+#  time.timeZone = "America/New_York";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -72,7 +80,7 @@
       enable = true;
       displayManager = {
         lightdm.enable = true;
-        defaultSession = “none+bspwm”;
+#        defaultSession = “none+bspwm”;
       };
       desktopManager.xfce.enable = true;
       windowManager.bspwm.enable = true;
@@ -108,7 +116,7 @@
     hardware = {
       bluetooth = {
         enable = true;
-        hsphfpd.enable = true;         # HSP & HFP daemon
+        hsphfpd.enable = false;         # HSP & HFP daemon
         settings = {
           General = {
             Enable = "Source,Sink,Media,Socket";
@@ -123,24 +131,34 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  
+  ################################################
+  # Define Users
+  ################################################
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.deuce = {
+  users.users.${user} = {
   	isNormalUser = true;
-	  extraGroups = [ "wheel" "video" " audio" " networkmanager" "libvirt" "lp" "scanner"]; # Enable ‘sudo’ for the user.  
+	  extraGroups = [ "sudo" "wheel" "video" " audio" " networkmanager" "libvirt" "lp" "scanner"]; # Enable ‘sudo’ for the user.  
 	  initialPassword = "password";
     shell = pkgs.zsh;
-    ackages = with pkgs; [
+    packages = with pkgs; [
     #  firefox
     #  thunderbird
     ];
   };
 
 
-	environment.systemPackages = with pkgs; [
-		alacritty
+
+# Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
+
+environment.systemPackages = with pkgs; [
+    alacritty
     bspwm
-    cinnamon.nemo
-    corectrl
+    btop
+    cinnamon.nemo    
+    discord
     dunst
     firefox-devedition-bin
     neovim
@@ -180,8 +198,9 @@
   ################################################
  
    services.openssh.enable = true;
-   services.xserver.windowManager.bspwm.enable = true;
+#   services.xserver.windowManager.bspwm.enable = true;
    security.polkit.enable = true;
+   services.input-remapper.enable = true;
 
   ################################################
   # Open ports in the firewall.
@@ -190,6 +209,20 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+
+
+  ################################################
+  # HomeManager Packages
+  ################################################
+ # home-manager.users.${user} = {pkgs, ... }: {
+ #   home.stateVersion = "22.11";
+ #   home.packages = with pkgs; [ 
+ #     htop
+#
+ #   ];
+#
+ # };
 
 
 
@@ -208,4 +241,3 @@
   system.stateVersion = "22.11"; # Did you read the comment?
 
 }
-
