@@ -85,6 +85,6 @@
    hardware.opengl = {
     enable = true;
     driSupport = true;
-    extraPackages = [ pkgs.mesa_driDrivers ];
+    # extraPackages = [ pkgs.mesa_driDrivers ];
   };
 }
