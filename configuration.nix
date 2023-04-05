@@ -104,7 +104,7 @@
 
 
   # Allow unfree packages
-  # nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -121,7 +121,7 @@
     steam
     sxhkd
     wget
-    # vscode     
+    vscode     
     
   ];
 
@@ -139,6 +139,14 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.xserver.windowManager.bspwm.enable = true;
+
+  services.xserver.videoDrivers = [
+  "amdgpu"
+  "radeon"
+  "nouveau"
+  "modesetting"
+  "fbdev"
+];
 
 
 
