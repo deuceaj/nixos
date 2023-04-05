@@ -77,7 +77,9 @@ in
   # Set up SDDM as the default display manager.
   services = {
     displayManager ={
-     sddm.enable = true;};
+     sddm = {enable = true;
+     };
+    
     xserver = {
     
     displayManager = {
@@ -151,6 +153,7 @@ in
     };
 
 
+};
 };
 }
 
