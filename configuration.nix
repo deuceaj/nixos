@@ -156,14 +156,7 @@ in
   security.polkit.enable = true;
 
 
-  programs.sxhkd = {
-    enable = true;
-    extraConfig = ''
-      # Example keybindings
-      alt + Return
-          alacritty
-    '';
-  };
+
 
 
 
