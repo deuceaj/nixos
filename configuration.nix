@@ -75,26 +75,47 @@ in
 
 
   # Set up SDDM as the default display manager.
-  services.displayManager.sddm.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
+  services = {
+    displayManager ={
+     sddm.enable = true;};
+    xserver = {
+    
+    displayManager
+      sddm = {
+        enable = true;
+      };
+    };
+    windowManager = {
+      bspwm = {
+        enable = true;
+        };
+    };
+      desktopManager = {
+        sxhkd = {
+          enable = true;
+        };
+        rofi = {
+          enable = true;
+        };
+        nitrogen = {
+          enable = true;
+        };
+    };
+ 
+    corectrl = {
+      enable = true;
+    };
 
-  # Configure BSPWM and SXHKD as your window manager and hotkey daemon.
-  services.xserver.windowManager.bspwm.enable = true;
-  services.xserver.desktopManager.sxhkd.enable = true;
+    polkit = {
+        enable = true;
+      };
 
-  # Set up Rofi as your application launcher.
-  services.xserver.desktopManager.rofi.enable = true;
-
-  # Set up Nitrogen as your wallpaper manager.
-  services.xserver.desktopManager.nitrogen.enable = true;
-
-  # Set up CoreCtrl as your system monitor and controller.
-  # services.corectrl.enable = true;
-
-
-  # Enable Polkit as your authentication agent.
-  services.polkit.enable = true;
-  security.polkit.enable = true;
+  security = {
+   polkit = {
+    enable = true; 
+   };
+  };
+  
 
 
 
