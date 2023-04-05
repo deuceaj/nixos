@@ -39,7 +39,7 @@ in
     extraEntries = ''
       menuentry "Windows 10" {
         insmod ntfs
-        search --no-floppy --fs-uuid --set=root <UUID of Windows partition>
+        search --no-floppy --fs-uuid --set=root 201C496E1C493FD0
         chainloader +1
       }
     '';
