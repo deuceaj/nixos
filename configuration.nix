@@ -89,7 +89,7 @@ in
   services.xserver.desktopManager.nitrogen.enable = true;
 
   # Set up CoreCtrl as your system monitor and controller.
-  services.corectrl.enable = true;
+  # services.corectrl.enable = true;
 
 
   # Enable Polkit as your authentication agent.
