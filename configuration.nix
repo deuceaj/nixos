@@ -80,7 +80,7 @@ in
      sddm.enable = true;};
     xserver = {
     
-    displayManager
+    displayManager = {
       sddm = {
         enable = true;
       };
@@ -109,7 +109,8 @@ in
     polkit = {
         enable = true;
       };
-
+    };
+    
   security = {
    polkit = {
     enable = true; 
