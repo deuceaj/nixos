@@ -118,7 +118,7 @@
     nitrogen    
     polybar
     rofi
-    steam
+    # steam
     sxhkd
     wget
     vscode     
