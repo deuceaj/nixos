@@ -110,7 +110,7 @@ in
         enable = true;
       };
     };
-    
+
   security = {
    polkit = {
     enable = true; 
@@ -151,4 +151,6 @@ in
     };
 
 
+};
 }
+
