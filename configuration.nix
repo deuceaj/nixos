@@ -115,8 +115,7 @@
     cinnamon.nemo
     firefox-devedition-bin
     neovim
-    nitrogen
-    polkit-gnome
+    nitrogen    
     polybar
     rofi
     steam
