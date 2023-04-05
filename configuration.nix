@@ -94,8 +94,14 @@
   programs.corectrl.gpuOverclock.ppfeaturemask = "0xffffffff";
   # services.corectrl.enable = true;
 
-  services.polkit.enable = true;
+  # services.polkit.enable = true;
   security.polkit.enable = true;
+  security.polkit.extraConfig = "/* Allow any local user to do anything (dangerous!). */
+  polkit.addRule(function(action, subject) {
+    if (subject.local) return "yes";
+  });"
+
+
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
