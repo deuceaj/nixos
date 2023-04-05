@@ -92,7 +92,7 @@
   programs.corectrl.enable = true;
   programs.corectrl.gpuOverclock.enable = true;
   programs.corectrl.gpuOverclock.ppfeaturemask = "0xffffffff";
-  services.corectrl.enable = true;
+  # services.corectrl.enable = true;
 
   services.polkit.enable = true;
   security.polkit.enable = true;
