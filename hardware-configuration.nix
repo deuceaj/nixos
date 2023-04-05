@@ -86,3 +86,4 @@
     driSupport = true;
     extraPackages = [ pkgs.mesa_driDrivers ];
   };
+}
