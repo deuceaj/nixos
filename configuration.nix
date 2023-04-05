@@ -96,10 +96,10 @@
 
   # services.polkit.enable = true;
   security.polkit.enable = true;
-  security.polkit.extraConfig = "/* Allow any local user to do anything (dangerous!). */
-  polkit.addRule(function(action, subject) {
-    if (subject.local) return "yes";
-  });";
+  # security.polkit.extraConfig = "''/* Allow any local user to do anything (dangerous!). */
+  # polkit.addRule(function(action, subject) {
+  #   if (subject.local) return "yes";
+  # });'' ";
 
 
 
