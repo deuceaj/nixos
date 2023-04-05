@@ -15,7 +15,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <nixpkgs/nixos/modules/installer/iso-image/installation-cd-minimal.nix>
+      # <nixpkgs/nixos/modules/installer/iso-image/installation-cd-minimal.nix>
       <nixpkgs/nixos/modules/admin/users.nix>
       <nixpkgs/nixos/modules/services/x11/sddm.nix>
       <nixpkgs/nixos/modules/services/x11/desktop-managers/bspwm.nix>
