@@ -58,7 +58,7 @@
       fsType = "cifs";
       options = let
         automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-      in ["${automount_opts},mfsymlinks,uid=1000,gid=100,credentials=/home/matthias/smb"];
+      in ["${automount_opts},mfsymlinks,uid=1000,gid=100,credentials=/home/deuce/.local/.smbcredentials"];
     };
 
   # fileSystems."/media" =
