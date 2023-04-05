@@ -56,24 +56,24 @@ in
     hashedPassword = "${pkgs.lib.mkpasswd "hello"}";
   };
 
-  # Enable the required services
-  services = {
-    "sddm" = {
-      enable = true;
-      displayManager.theme = "breeze";
-    };
-    "corectl" = {
-      enable = true;
-    };
-    "polkit-gnome" = {
-      enable = true;
-    };
-    "openssh" = {
-      enable = true;
-    };
-    "input-remapper" = {
-      enable = true;
-    };
+  # # Enable the required services
+  # services = {
+  #   "sddm" = {
+  #     enable = true;
+  #     displayManager.theme = "breeze";
+  #   };
+  #   "corectl" = {
+  #     enable = true;
+  #   };
+  #   "polkit-gnome" = {
+  #     enable = true;
+  #   };
+  #   "openssh" = {
+  #     enable = true;
+  #   };
+  #   "input-remapper" = {
+  #     enable = true;
+  #   };
 
 
 
