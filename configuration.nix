@@ -15,14 +15,14 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <nixpkgs/nixos/modules/admin/users.nix>
-      <nixpkgs/nixos/modules/services/x11/sddm.nix>
-      <nixpkgs/nixos/modules/services/x11/desktop-managers/bspwm.nix>
-      <nixpkgs/nixos/modules/programs/rofi.nix>
-      <nixpkgs/nixos/modules/programs/sxhkd.nix>
-      <nixpkgs/nixos/modules/programs/nitrogen.nix>
-      <nixpkgs/nixos/modules/services/systemd/corectl.nix>
-      <nixpkgs/nixos/modules/security/polkit/polkit-gnome.nix>
+      # <nixpkgs/nixos/modules/admin/users.nix>
+      # <nixpkgs/nixos/modules/services/x11/sddm.nix>
+      # <nixpkgs/nixos/modules/services/x11/desktop-managers/bspwm.nix>
+      # <nixpkgs/nixos/modules/programs/rofi.nix>
+      # <nixpkgs/nixos/modules/programs/sxhkd.nix>
+      # <nixpkgs/nixos/modules/programs/nitrogen.nix>
+      # <nixpkgs/nixos/modules/services/systemd/corectl.nix>
+      # <nixpkgs/nixos/modules/security/polkit/polkit-gnome.nix>
 #      <home-manager/nixos>
     ];
 
@@ -80,20 +80,20 @@ in
   };
 
   # Configure bspwm
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      defaultSession = "bspwm";
-    };
-    windowManager.bspwm = {
-      enable = true;
-    };
-  };
+  # services.xserver = {
+  #   enable = true;
+  #   displayManager = {
+  #     defaultSession = "bspwm";
+  #   };
+  #   windowManager.bspwm = {
+  #     enable = true;
+  #   };
+  # };
 
   # Configure Rofi, Sxhkd, and Nitrogen
-  programs.rofi = {
-    enable = true;
-  };
+  # programs.rofi = {
+  #   enable = true;
+  # };
   programs.sxhkd = {
     enable = true;
     extraConfig = ''
@@ -102,10 +102,10 @@ in
           alacritty
     '';
   };
-  programs.nitrogen = {
-    enable = true;
-    wallpaper = "/path/to/wallpaper.jpg";
-  };
+  # programs.nitrogen = {
+  #   enable = true;
+  #   wallpaper = "/path/to/wallpaper.jpg";
+  # };
 
 
 # Allow unfree packages
@@ -113,21 +113,49 @@ in
 
   environment.systemPackages = with pkgs; [
     alacritty
-    # bspwm
+    bspwm
     btop
+    corectrl
     cinnamon.nemo    
     discord
     dunst
     firefox-devedition-bin
     neovim
-    # nitrogen
-    # sxhkd
-    # rofi
+    nitrogen
+    polkit-gnome
+    sddm
+    sxhkd
+    rofi
     wget
     vscode  
+
   #     thunderbird
      ];
   # };
+
+
+  # Set up SDDM as the default display manager.
+  services.displayManager.sddm.enable = true;
+  services.xserver.displayManager.sddm.enable = true;
+
+  # Configure BSPWM and SXHKD as your window manager and hotkey daemon.
+  services.xserver.windowManager.bspwm.enable = true;
+  services.xserver.desktopManager.sxhkd.enable = true;
+
+  # Set up Rofi as your application launcher.
+  services.xserver.desktopManager.rofi.enable = true;
+
+  # Set up Nitrogen as your wallpaper manager.
+  services.xserver.desktopManager.nitrogen.enable = true;
+
+  # Set up CoreCtrl as your system monitor and controller.
+  services.corectrl.enable = true;
+
+  # Enable Polkit as your authentication agent.
+  services.polkit.enable = true;
+  security.polkit.enable = true;
+
+
 
 
  ################################################
