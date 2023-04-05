@@ -77,7 +77,7 @@ in
 
 
 
-  };
+  # };
 
   # Configure bspwm
   # services.xserver = {
@@ -154,8 +154,6 @@ in
   # Enable Polkit as your authentication agent.
   services.polkit.enable = true;
   security.polkit.enable = true;
-
-
 
 
 
