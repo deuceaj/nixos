@@ -94,14 +94,14 @@ in
   # programs.rofi = {
   #   enable = true;
   # };
-  programs.sxhkd = {
-    enable = true;
-    extraConfig = ''
-      # Example keybindings
-      alt + Return
-          alacritty
-    '';
-  };
+  # programs.sxhkd = {
+  #   enable = true;
+  #   extraConfig = ''
+  #     # Example keybindings
+  #     alt + Return
+  #         alacritty
+  #   '';
+  # };
   # programs.nitrogen = {
   #   enable = true;
   #   wallpaper = "/path/to/wallpaper.jpg";
@@ -155,6 +155,15 @@ in
   services.polkit.enable = true;
   security.polkit.enable = true;
 
+
+  programs.sxhkd = {
+    enable = true;
+    extraConfig = ''
+      # Example keybindings
+      alt + Return
+          alacritty
+    '';
+  };
 
 
 
