@@ -104,13 +104,13 @@ security.sudo.wheelNeedsPassword = false; # User does not need to give password 
 
 
 
-home = {
-    username = "${user}";
-    homeDirectory = "/home/${user}";
-  };
-  programs = {
-    home-manager.enable = true;
-  };
+# home = {
+#     username = "${user}";
+#     homeDirectory = "/home/${user}";
+#   };
+#   programs = {
+#     home-manager.enable = true;
+#   };
 
 
   # Enable the X11 windowing system.
