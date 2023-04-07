@@ -15,17 +15,17 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/c6f0436b-2e54-4cf0-91e8-42f66cabf51a";
+    { device = "/dev/disk/by-uuid/e3cb1bbe-bfd9-4dcb-bbd0-5bf69c1d3023";
       fsType = "ext4";
     };
 
   fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/CC08-EF56";
+    { device = "/dev/disk/by-uuid/4504-A244";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/5285c216-5537-4332-8c63-7917dcdb8969"; }
+    [ { device = "/dev/disk/by-uuid/36b7488c-0e09-466d-80a7-34a4809faab0"; }
     ];
 
 

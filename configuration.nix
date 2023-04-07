@@ -9,12 +9,32 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+       nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+      neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+      # rust-overlay.url = "github:oxalica/rust-overlay";
+      # impermanence.url = "github:nix-community/impermanence";
+      nur.url = "github:nix-community/NUR";
+      hyprpicker.url = "github:hyprwm/hyprpicker";
+      hypr-contrib.url = "github:hyprwm/contrib";
+      flake-parts.url = "github:hercules-ci/flake-parts";
+      # sops-nix.url = "github:Mic92/sops-nix";
+      picom.url = "github:yaocccc/picom";
+      hyprland = {
+        url = "github:hyprwm/Hyprland";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+      home-manager = {
+        url = "github:nix-community/home-manager";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+      
   ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.supportedFilesystems = [ "ntfs" ];
 
   networking.hostName = "Alpha"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -44,6 +64,50 @@
     LC_TIME = "en_US.UTF-8";
   };
 
+
+
+services = {
+    dbus.packages = [ pkgs.gcr ];
+    getty.autologinUser = "${user}";
+    gvfs.enable = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+    };
+  };
+
+
+
+security.rtkit.enable = true;
+security.polkit.enable = true;
+security.sudo.wheelNeedsPassword = false; # User does not need to give password when using sudo.
+  security.sudo = {
+    enable = false;
+    extraConfig = ''
+      ${user} ALL=(ALL) NOPASSWD:ALL
+    '';
+  };
+  security.doas = {
+    enable = true;
+    extraConfig = ''
+      permit nopass :wheel
+    '';
+  };
+
+
+
+home = {
+    username = "${user}";
+    homeDirectory = "/home/${user}";
+  };
+  programs = {
+    home-manager.enable = true;
+  };
+
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -59,9 +123,7 @@
   };
 
 
-  security.rtkit.enable = true;
-  security.polkit.enable = true;
-  security.sudo.wheelNeedsPassword = false; # User does not need to give password when using sudo.
+  
   sound = {                                # Deprecated due to pipewire
     enable = true;
     mediaKeys = {
@@ -70,10 +132,6 @@
   };
 
 
-
-  # Enable sound with pipewire.
-  # sound.enable = true;
-  hardware.pulseaudio.enable = false;  
 
 
   services = {
@@ -86,46 +144,16 @@
         userServices = true;
       };
     };
-    pipewire = {                            # Sound
-      enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-      pulse.enable = true;
-      jack.enable = true;
-    };
+  
     openssh = {                             # SSH: secure shell (remote connection to shell of server)
       enable = true;                        # local: $ ssh <user>@<ip>
-                                            # public:
-                                            #   - port forward 22 TCP to server
-                                            #   - in case you want to use the domain name insted of the ip:
-                                            #       - for me, via cloudflare, create an A record with name "ssh" to the correct ip without proxy
-                                            #   - connect via ssh <user>@<ip or ssh.domain>
-                                            # generating a key:
-                                            #   - $ ssh-keygen   |  ssh-copy-id <ip/domain>  |  ssh-add
-                                            #   - if ssh-add does not work: $ eval `ssh-agent -s`
       allowSFTP = true;                     # SFTP: secure file transfer protocol (send file to server)
-                                            # connect: $ sftp <user>@<ip/domain>
-                                            #   or with file browser: sftp: //<ip address>
-                                            # commands:
-                                            #   - lpwd & pwd = print (local) parent working directory
-                                            #   - put/get <filename> = send or receive file
-    #   extraConfig = ''
-    #     HostKeyAlgorithms +ssh-rsa
-    #   '';                                   # Temporary extra config so ssh will work in guacamole
+     
     };
-    # flatpak.enable = true;                  # download flatpak file from website - sudo flatpak install <path> - reboot if not showing up
-                                            # sudo flatpak uninstall --delete-data <app-id> (> flatpak list --app) - flatpak uninstall --unused
-                                            # List:
-                                            # com.obsproject.Studio
-                                            # com.parsecgaming.parsec
-                                            # com.usebottles.bottles
+
   };
 
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.deuce = {
@@ -135,7 +163,46 @@
       "wheel""video""audio""camera""networkmanager""lp""scanner""kvm""libvirtd"
     ];
     shell = pkgs.zsh;                       # Default shell
-    packages = with pkgs; [];
+    directories = [
+          "Downloads"
+          "Music"
+          "Pictures"
+          "Documents"
+          "Videos"
+          ".cache"
+          # "Codelearning"
+          ".npm-global"
+          ".config"
+          # ".thunderbird"
+          # ".go-musicfox"
+          "Flakes"
+          "Kvm"
+          # ".cabal"
+          { directory = ".gnupg"; mode = "0700"; }
+          { directory = ".ssh"; mode = "0700"; }
+          ".local"
+          ".mozilla"
+        ];
+    packages = with pkgs; [
+      libnotify
+      xclip
+      xorg.xrandr
+      cinnamon.nemo
+      networkmanagerapplet
+      xorg.xev
+      alsa-lib
+      alsa-utils
+      flac
+      pulsemixer
+      linux-firmware
+      sshpass
+      # pkgs.rust-bin.stable.latest.default
+      lxappearance
+      imagemagick
+      flameshot
+
+
+    ];
   };
 
 
@@ -162,8 +229,6 @@
   environment.systemPackages = with pkgs; [
     alacritty
     bspwm
-    cinnamon.nemo
-#    corectrl
     firefox-devedition-bin
     neovim
     polkit_gnome
