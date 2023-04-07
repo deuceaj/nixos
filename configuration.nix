@@ -88,19 +88,19 @@ hardware.pulseaudio.enable = false;
 
 security.rtkit.enable = true;
 security.polkit.enable = true;
-security.sudo.wheelNeedsPassword = false; # User does not need to give password when using sudo.
-  security.sudo = {
-    enable = false;
-    extraConfig = ''
-      ${user} ALL=(ALL) NOPASSWD:ALL
-    '';
-  };
-  security.doas = {
-    enable = true;
-    extraConfig = ''
-      permit nopass :wheel
-    '';
-  };
+# security.sudo.wheelNeedsPassword = false; # User does not need to give password when using sudo.
+#   security.sudo = {
+#     enable = false;
+#     extraConfig = ''
+#       ${user} ALL=(ALL) NOPASSWD:ALL
+#     '';
+#   };
+#   security.doas = {
+#     enable = true;
+#     extraConfig = ''
+#       permit nopass :wheel
+#     '';
+#   };
 
 
 
