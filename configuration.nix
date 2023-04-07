@@ -2,20 +2,21 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, ...
+}: 
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-    ];
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "Alpha"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -46,9 +47,10 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable the XFCE Desktop Environment.
+  # Enable the KDE Plasma Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.windowManager.bspwm.enable = true;
 
   # Configure keymap in X11
   services.xserver = {
@@ -56,25 +58,71 @@
     xkbVariant = "";
   };
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
+
+  security.rtkit.enable = true;
+  security.polkit.enable = true;
+  security.sudo.wheelNeedsPassword = false; # User does not need to give password when using sudo.
+  sound = {                                # Deprecated due to pipewire
+    enable = true;
+    mediaKeys = {
+      enable = true;
+    };
+  };
+
+
 
   # Enable sound with pipewire.
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+  # sound.enable = true;
+  hardware.pulseaudio.enable = false;  
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+
+  services = {
+    avahi = {                                   # Needed to find wireless printer
+      enable = true;
+      nssmdns = true;
+      publish = {                               # Needed for detecting the scanner
+        enable = true;
+        addresses = true;
+        userServices = true;
+      };
+    };
+    pipewire = {                            # Sound
+      enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+      pulse.enable = true;
+      jack.enable = true;
+    };
+    openssh = {                             # SSH: secure shell (remote connection to shell of server)
+      enable = true;                        # local: $ ssh <user>@<ip>
+                                            # public:
+                                            #   - port forward 22 TCP to server
+                                            #   - in case you want to use the domain name insted of the ip:
+                                            #       - for me, via cloudflare, create an A record with name "ssh" to the correct ip without proxy
+                                            #   - connect via ssh <user>@<ip or ssh.domain>
+                                            # generating a key:
+                                            #   - $ ssh-keygen   |  ssh-copy-id <ip/domain>  |  ssh-add
+                                            #   - if ssh-add does not work: $ eval `ssh-agent -s`
+      allowSFTP = true;                     # SFTP: secure file transfer protocol (send file to server)
+                                            # connect: $ sftp <user>@<ip/domain>
+                                            #   or with file browser: sftp: //<ip address>
+                                            # commands:
+                                            #   - lpwd & pwd = print (local) parent working directory
+                                            #   - put/get <filename> = send or receive file
+    #   extraConfig = ''
+    #     HostKeyAlgorithms +ssh-rsa
+    #   '';                                   # Temporary extra config so ssh will work in guacamole
+    };
+    # flatpak.enable = true;                  # download flatpak file from website - sudo flatpak install <path> - reboot if not showing up
+                                            # sudo flatpak uninstall --delete-data <app-id> (> flatpak list --app) - flatpak uninstall --unused
+                                            # List:
+                                            # com.obsproject.Studio
+                                            # com.parsecgaming.parsec
+                                            # com.usebottles.bottles
   };
+
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -83,23 +131,26 @@
   users.users.deuce = {
     isNormalUser = true;
     description = "deuce";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    #  thunderbird
+    extraGroups = [
+      "wheel""video""audio""camera""networkmanager""lp""scanner""kvm""libvirtd"
     ];
+    shell = pkgs.zsh;                       # Default shell
+    packages = with pkgs; [];
   };
 
-  programs.corectrl.enable = true;
-  programs.corectrl.gpuOverclock.enable = true;
-  programs.corectrl.gpuOverclock.ppfeaturemask = "0xffffffff";
-  # services.corectrl.enable = true;
 
-  # services.polkit.enable = true;
-  security.polkit.enable = true;
-  # security.polkit.extraConfig = "''/* Allow any local user to do anything (dangerous!). */
-  # polkit.addRule(function(action, subject) {
-  #   if (subject.local) return "yes";
-  # });'' ";
+
+ 
+
+
+  environment = {
+    variables = {
+      TERMINAL = "alacritty";
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
+  };
+
 
 
 
@@ -109,53 +160,53 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    
     alacritty
     bspwm
     cinnamon.nemo
+#    corectrl
     firefox-devedition-bin
     neovim
-    nitrogen    
+    polkit_gnome
     polybar
     rofi
-    # steam
+    steam
     sxhkd
-    wget
-    vscode     
-    
+    vscode
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
- # programs.mtr.enable = true;
- # programs.gnupg.agent = {
- #   enable = true;
- #   enableSSHSupport = true;
- #   programs.corectrl.enable = true;
- # };
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  #
+  # };
+
+  programs.corectrl.enable = true;
+  programs.corectrl.gpuOverclock.enable = true;
+  programs.corectrl.gpuOverclock.ppfeaturemask = "0xffffffff";
+  
+
+
+
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  services.xserver.windowManager.bspwm.enable = true;
-
-  services.xserver.videoDrivers = [
-  "amdgpu"
-  "radeon"
-  "nouveau"
-  "modesetting"
-  "fbdev"
-];
 
 
 
 
 
 
- # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+
+ 
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ...
+  # ];
+  # networking.firewall.allowedUDPPorts = [ ...
+  # ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
@@ -164,7 +215,6 @@
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  # (e.g. man configuration.nix or on https: //nixos.org/nixos/options.html).
   system.stateVersion = "22.11"; # Did you read the comment?
-
 }
