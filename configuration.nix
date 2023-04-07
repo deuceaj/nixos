@@ -5,6 +5,11 @@
 { config, pkgs, ...
 }: 
 
+let
+   user="deuce";
+in
+
+
 {
   imports =
     [ # Include the results of the hardware scan.
