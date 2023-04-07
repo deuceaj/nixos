@@ -168,26 +168,26 @@ security.sudo.wheelNeedsPassword = false; # User does not need to give password 
       "wheel""video""audio""camera""networkmanager""lp""scanner""kvm""libvirtd"
     ];
     shell = pkgs.zsh;                       # Default shell
-    directories = [
-          "Downloads"
-          "Music"
-          "Pictures"
-          "Documents"
-          "Videos"
-          ".cache"
-          # "Codelearning"
-          ".npm-global"
-          ".config"
-          # ".thunderbird"
-          # ".go-musicfox"
-          "Flakes"
-          "Kvm"
-          # ".cabal"
-          { directory = ".gnupg"; mode = "0700"; }
-          { directory = ".ssh"; mode = "0700"; }
-          ".local"
-          ".mozilla"
-        ];
+    # directories = [
+    #       "Downloads"
+    #       "Music"
+    #       "Pictures"
+    #       "Documents"
+    #       "Videos"
+    #       ".cache"
+    #       # "Codelearning"
+    #       ".npm-global"
+    #       ".config"
+    #       # ".thunderbird"
+    #       # ".go-musicfox"
+    #       "Flakes"
+    #       "Kvm"
+    #       # ".cabal"
+    #       { directory = ".gnupg"; mode = "0700"; }
+    #       { directory = ".ssh"; mode = "0700"; }
+    #       ".local"
+    #       ".mozilla"
+    #     ];
     packages = with pkgs; [
       libnotify
       xclip
