@@ -23,10 +23,10 @@
       #   url = "github:hyprwm/Hyprland";
       #   inputs.nixpkgs.follows = "nixpkgs";
       # };
-      home-manager = {
-        url = "github:nix-community/home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
+      # home-manager = {
+      #   url = "github:nix-community/home-manager";
+      #   inputs.nixpkgs.follows = "nixpkgs";
+      # };
       
   ];
 
