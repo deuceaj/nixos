@@ -205,6 +205,7 @@ security.polkit.enable = true;
       lxappearance
       imagemagick
       flameshot
+      partition-manager
 
 
     ];
@@ -233,10 +234,16 @@ security.polkit.enable = true;
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     alacritty
+    arandr
     bspwm
+    btop
     cifs-utils
     firefox-devedition-bin
+    git
+    neofetch
+    nitrogen
     neovim
+    pavucontrol
     polkit_gnome
     polybar
     rofi
@@ -257,8 +264,23 @@ security.polkit.enable = true;
   programs.corectrl.enable = true;
   programs.corectrl.gpuOverclock.enable = true;
   programs.corectrl.gpuOverclock.ppfeaturemask = "0xffffffff";
-  
+  programs.partition-manager.enable = true;
 
+systemd = {
+  user.services.polkit-gnome-authentication-agent-1 = {
+    description = "polkit-gnome-authentication-agent-1";
+    wantedBy = [ "graphical-session.target" ];
+    wants = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+  };
+};
 
 
 
