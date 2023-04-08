@@ -37,9 +37,35 @@
     };
 
   
+    fileSystems."/media/Gamma" =
+    { device = "/dev/disk/by-uuid/b1121d57-4180-4ad1-af4f-158af3b18883";
+      fsType = "btrfs";
+    options = [ "nofail" ];
+    };
+
+
+  fileSystems."/media/Delta" =
+    { #truenas smb storage
+      device = "//192.168.2.10/Delta";
+      fsType = "cifs";
+      options = let
+        automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+      in ["${automount_opts},mfsymlinks,uid=1000,gid=100,credentials=/home/deuce/.local/.smbcredentials"];
+    };
+
+
   fileSystems."/media/Theta" =
     { #truenas smb storage
-      device = "//192.168.0.3/storage";
+      device = "//192.168.2.10/Theta";
+      fsType = "cifs";
+      options = let
+        automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+      in ["${automount_opts},mfsymlinks,uid=1000,gid=100,credentials=/home/deuce/.local/.smbcredentials"];
+    };
+
+    fileSystems."/media/Vega" =
+    { #truenas smb storage
+      device = "//192.168.2.10/Vega";
       fsType = "cifs";
       options = let
         automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
