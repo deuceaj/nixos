@@ -73,7 +73,7 @@ in
 
 services = {
     dbus.packages = [ pkgs.gcr ];
-    getty.autologinUser = "${user}";
+    # getty.autologinUser = "${user}";
     gvfs.enable = true;
     pipewire = {
       enable = true;
