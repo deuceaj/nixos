@@ -164,6 +164,7 @@ security.polkit.enable = true;
   users.users.deuce = {
     isNormalUser = true;
     description = "deuce";
+    initialPassword = "password";
     extraGroups = [
       "wheel""video""audio""camera""networkmanager""lp""scanner""kvm""libvirtd"
     ];
