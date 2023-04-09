@@ -15,17 +15,22 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/e08e8ee8-6348-4f66-accc-e80313abc978";
+    { #device = "/dev/disk/by-uuid/e08e8ee8-6348-4f66-accc-e80313abc978";
+      device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
     };
 
   fileSystems."/boot/" =
-    { device = "/dev/disk/by-uuid/F0D5-4EF6";
+    { # device = "/dev/disk/by-uuid/F0D5-4EF6";
+      device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/67891c06-a3b9-48e9-bd74-1154f1ec5f01"; }
+    [ { 
+      # device = "/dev/disk/by-uuid/67891c06-a3b9-48e9-bd74-1154f1ec5f01"; 
+      device = "/dev/disk/by-label/nixos";
+      }
     ];
 
 
