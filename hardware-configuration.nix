@@ -12,26 +12,26 @@
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "virtio_pci" "sr_mod" "virtio_blk"];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ ];
 
   fileSystems."/" =
-    { #device = "/dev/disk/by-uuid/e08e8ee8-6348-4f66-accc-e80313abc978";
+    { #device = "/dev/disk/by-uuid/80e0d316-954b-4959-8c5d-06be7255a036";
       device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { # device = "/dev/disk/by-uuid/F0D5-4EF6";
+    { #device = "/dev/disk/by-uuid/FCCC-9ECD";
       device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { 
-      # device = "/dev/disk/by-uuid/67891c06-a3b9-48e9-bd74-1154f1ec5f01"; 
-      device = "/dev/disk/by-label/nixos";
-      }
-    ];
+   [
+     { #device = "/dev/disk/by-uuid/7d0c3f66-c6eb-413c-956f-dfdd8ceb0cae";
+       device = "/dev/disk/by-label/swap";
+     }
+   ];
 
 
   
