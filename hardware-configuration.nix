@@ -20,7 +20,7 @@
       fsType = "ext4";
     };
 
-  fileSystems."/boot/" =
+  fileSystems."/boot" =
     { # device = "/dev/disk/by-uuid/F0D5-4EF6";
       device = "/dev/disk/by-label/boot";
       fsType = "vfat";
